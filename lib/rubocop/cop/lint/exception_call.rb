@@ -1,11 +1,11 @@
 # encoding: utf-8
 # frozen_string_literal: true
 
-module Rubocop
+module RuboCop
   module Cop
     module Lint
       class ExceptionCall < Cop
-        MSG = 'カンマ(,)を忘れていませんか？'
+        MSG = 'カンマ(,)を忘れていませんか?'.freeze
 
         def on_send(node)
           receiver, method_name, *args = *node
@@ -13,7 +13,7 @@ module Rubocop
           return unless check_receiver(receiver)
           return unless check_args(args)
 
-          add_offence(node, loc(args))
+          add_offense(node, location: loc(args))
         end
 
         def autocorrect(node)
@@ -28,7 +28,7 @@ module Rubocop
 
         def check_receiver(receiver)
           return true unless receiver
-          return true if receiver.const_type? && receiver.const_name == 'Karnel'
+          return true if receiver.const_type? && receiver.const_name == 'Kernel'
           return false
         end
 
@@ -41,14 +41,16 @@ module Rubocop
           return method_name =~ /^[A-Z]/
         end
 
+        #
+        #
+        # @return []
         def loc(args)
           arg = args.first
           _receiver, _method_name, inner_args = *arg
-          end_pos = inner_args.loc.begin.begin_pos
+          end_pos   = inner_args.loc.begin.begin_pos
           begin_pos = arg.loc.selector.end_pos
           Parser::Source::Range.new(arg.loc.expression.source_buffer, begin_pos, end_pos)
         end
-
       end
     end
   end

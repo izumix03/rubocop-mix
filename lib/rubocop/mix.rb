@@ -2,7 +2,7 @@ require 'rubocop'
 require 'rubocop/mix/version'
 require 'rubocop/mix/inject'
 
-Rubocop::Mix::Inject.defaults!
+RuboCop::Mix::Inject.defaults!
 
 # cops
-require 'rubocop/cop/lint/mix'
+require 'rubocop/cop/lint/exception_call'
